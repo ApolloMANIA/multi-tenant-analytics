@@ -1,0 +1,71 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d analytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://app_user:app_user_secret@db:5432/analytics
+      JWT_SECRET: local-dev-jwt-secret-change-in-prod
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3000,http://localhost
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ""
+        VITE_SUPERSET_URL: http://localhost:8088
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+  superset:
+    image: apache/superset:4.0.2
+    environment:
+      SUPERSET_SECRET_KEY: local-superset-secret-change-me
+      SUPERSET_CONFIG_PATH: /app/pythonpath/superset_config.py
+      ANALYTICS_SQLALCHEMY_URI: postgresql+psycopg2://superset_reader:superset_reader_secret@db:5432/analytics
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./superset/superset_config.py:/app/pythonpath/superset_config.py:ro
+      - ./superset/docker-init.sh:/app/docker-init.sh:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["/bin/bash", "/app/docker-init.sh"]
+
+volumes:
+  pgdata:

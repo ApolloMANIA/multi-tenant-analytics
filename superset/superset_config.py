@@ -1,0 +1,11 @@
+# Licensed for local demo use with Apache Superset
+FEATURE_FLAGS = {
+    "EMBEDDED_SUPERSET": True,
+}
+
+ROW_LIMIT = 5000
+SUPERSET_WEBSERVER_PORT = 8088
+TALISMAN_ENABLED = False
+WTF_CSRF_ENABLED = True
+SESSION_COOKIE_SAMESITE = "Lax"
+ENABLE_PROXY_FIX = True
