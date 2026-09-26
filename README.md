@@ -1,8 +1,6 @@
 # Multi-Tenant Enterprise Analytics
 
-A portfolio SaaS demo: **tenant-isolated sales analytics** with JWT RBAC, PostgreSQL row-level security, analytical SQL, a React dashboard, and Apache Superset — runnable with one Docker Compose command.
-
-Built to showcase the kind of backend and data-security work common in multi-tenant products: shared-schema tenancy, defense-in-depth authorization, and BI-ready aggregates.
+**Tenant-isolated sales analytics** with JWT RBAC, PostgreSQL row-level security, analytical SQL, a React dashboard, and Apache Superset — runnable with one Docker Compose command.
 
 ---
 
@@ -31,8 +29,6 @@ Browser → React (nginx) → FastAPI → PostgreSQL (RLS)
 2. Each API request sets session GUCs (`app.current_tenant`, `app.current_role`, …) with `SET LOCAL`
 3. RLS policies isolate `tenants`, `users`, and `sales` — even if application checks regress
 4. Reporting reads `mv_daily_sales` with window functions for trends and rankings
-
-**Why RLS (not schema-per-tenant)?** One shared schema keeps migrations simple as tenant count grows; the database still enforces isolation.
 
 ---
 
@@ -170,25 +166,3 @@ az acr build -r tenantanalyticsacr -t tenant-api:latest ./backend
 az acr build -r tenantanalyticsacr -t tenant-web:latest ./frontend
 # then Flexible Server + Container Apps linked to ACR
 ```
-
----
-
-## Resume / interview talking points
-
-**Resume-style bullets**
-
-- Designed a multi-tenant SaaS API with JWT RBAC and PostgreSQL RLS for tenant isolation
-- Built analytical pipelines with materialized views and window functions for sales reporting
-- Containerized API, Postgres, React, Redis, and Apache Superset; documented an Azure deployment path
-
-**Discussion prompts**
-
-- **RLS vs schema-per-tenant** — shared schema scales migrations; policies still enforce isolation if app code fails
-- **Defense in depth** — JWT role checks *and* Postgres write policies for viewer / editor / admin
-- **Login bootstrap** — `lookup_user_by_email` is `SECURITY DEFINER` so auth works before tenant GUC is set
-
----
-
-## License
-
-Demo / portfolio project — use and adapt freely for learning and interviews.
