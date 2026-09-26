@@ -49,7 +49,7 @@ Browser → React (nginx) → FastAPI → PostgreSQL (RLS)
 ## Quick start
 
 ```bash
-git clone https://github.com/<you>/multi-tenant-analytics.git
+git clone https://github.com/ApolloMANIA/multi-tenant-analytics.git
 cd multi-tenant-analytics
 docker compose up --build
 ```
