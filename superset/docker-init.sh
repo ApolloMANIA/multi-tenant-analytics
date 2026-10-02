@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+ANALYTICS_URI="${ANALYTICS_SQLALCHEMY_URI:-postgresql+psycopg2://superset_reader:superset_reader_secret@db:5432/analytics}"
+
 echo "Waiting for database..."
 sleep 5
 
@@ -16,7 +18,12 @@ superset fab create-admin \
 
 superset init
 
-echo "Superset ready — add DB: postgresql+psycopg2://superset_reader:superset_reader_secret@db:5432/analytics"
+# Register the analytics Postgres connection (idempotent create/update).
+superset set-database-uri \
+  --database_name "Analytics" \
+  --uri "$ANALYTICS_URI"
+
+echo "Superset ready — Analytics DB connected: $ANALYTICS_URI"
 
 exec gunicorn \
   --bind "0.0.0.0:8088" \

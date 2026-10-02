@@ -100,25 +100,25 @@ function MetricsPanel() {
             <AreaChart data={daily}>
               <defs>
                 <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#1f6f5b" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="#1f6f5b" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#7c5cff" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="#7c5cff" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="rgba(20,30,28,0.08)" vertical={false} />
+              <CartesianGrid stroke="rgba(18,18,18,0.06)" vertical={false} />
               <XAxis dataKey="sale_date" tick={{ fontSize: 11 }} minTickGap={24} />
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip formatter={(v) => money(v)} />
               <Area
                 type="monotone"
                 dataKey="revenue"
-                stroke="#1f6f5b"
+                stroke="#7c5cff"
                 fill="url(#rev)"
                 name="Revenue"
               />
               <Area
                 type="monotone"
                 dataKey="running_revenue"
-                stroke="#c45c26"
+                stroke="#ff6b4a"
                 fill="transparent"
                 strokeDasharray="4 4"
                 name="Running total"
@@ -132,11 +132,11 @@ function MetricsPanel() {
         <div className="chart-wrap">
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={ranks} layout="vertical" margin={{ left: 80 }}>
-              <CartesianGrid stroke="rgba(20,30,28,0.08)" horizontal={false} />
+              <CartesianGrid stroke="rgba(18,18,18,0.06)" horizontal={false} />
               <XAxis type="number" tick={{ fontSize: 11 }} />
               <YAxis type="category" dataKey="product_name" tick={{ fontSize: 11 }} width={80} />
               <Tooltip formatter={(v) => money(v)} />
-              <Bar dataKey="revenue" fill="#244a6f" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="revenue" fill="#3b82f6" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

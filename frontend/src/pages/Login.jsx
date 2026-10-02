@@ -3,8 +3,10 @@ import { useAuth } from "../AuthContext";
 
 const DEMOS = [
   { email: "admin@platform.local", label: "Platform Admin" },
+  { email: "admin@acme.local", label: "Acme Admin" },
   { email: "editor@acme.local", label: "Acme Editor" },
   { email: "viewer@acme.local", label: "Acme Viewer" },
+  { email: "admin@globex.local", label: "Globex Admin" },
   { email: "viewer@globex.local", label: "Globex Viewer" },
 ];
 
@@ -32,7 +34,7 @@ export default function Login() {
     <div className="shell login-shell">
       <div className="login-panel">
         <p className="brand hero-brand">Tenant Analytics</p>
-        <h1>Sign in to your workspace</h1>
+        <h1>Analytics that drive decisions</h1>
         <p className="muted">
           Multi-tenant sales metrics with JWT roles and PostgreSQL row-level security.
         </p>
