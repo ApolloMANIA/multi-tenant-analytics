@@ -105,17 +105,13 @@ Interactive docs: http://localhost:8000/docs
 
 ## Superset (optional BI)
 
+Compose registers the analytics Postgres connection on startup (`Analytics` → `superset_reader`).
+
 1. Open http://localhost:8088 — login `admin` / `admin`
-2. **Settings → Database connections → + Database**
-3. SQLAlchemy URI (from inside Compose):
+2. **Settings → Database connections** — you should already see **Analytics**
+3. Chart `mv_daily_sales` and `sales` (revenue over time, top products)
 
-```text
-postgresql+psycopg2://superset_reader:superset_reader_secret@db:5432/analytics
-```
-
-From the host machine, use `localhost` instead of `db`.
-
-4. Chart `mv_daily_sales` and `sales` (revenue over time, top products). Platform operators can compare tenants.
+Override the URI with `ANALYTICS_SQLALCHEMY_URI` in Compose if needed.
 
 ---
 
